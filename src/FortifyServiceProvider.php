@@ -95,6 +95,7 @@ class FortifyServiceProvider extends ServiceProvider
     {
         $this->configurePublishing();
         $this->configureRoutes();
+        $this->configureListener();
     }
 
     /**
@@ -140,5 +141,21 @@ class FortifyServiceProvider extends ServiceProvider
                 $this->loadRoutesFrom(__DIR__.'/../routes/routes.php');
             });
         }
+    }
+
+    /**
+     * Configure the listener for events
+     *
+     *
+     */
+    protected function configureListener()
+    {
+        Event::listen([
+            TwoFactorAuthenticationEnabled::class,
+            TwoFactorAuthenticationChallenged::class,
+        ], [
+            SendTOTPNotification::class,
+            'handle',
+        ]);
     }
 }
