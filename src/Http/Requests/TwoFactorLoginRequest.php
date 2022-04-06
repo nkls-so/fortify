@@ -58,7 +58,7 @@ class TwoFactorLoginRequest extends FormRequest
     {
         $window = null;
         if (Fortify::useAdditionalTwoFactorChannels() && $user->two_factor_channel != TwoFactorChannel::TOTP_APP) {
-            $window = config('fortify-extension.validation_window');
+            $window = config('fortify.validation_window');
         }
 
         return $this->code && tap(app(TwoFactorAuthenticationProvider::class)->verify(
