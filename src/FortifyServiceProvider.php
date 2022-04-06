@@ -39,7 +39,7 @@ use Laravel\Fortify\Http\Responses\RegisterResponse;
 use Laravel\Fortify\Http\Responses\SuccessfulPasswordResetLinkRequestResponse;
 use Laravel\Fortify\Http\Responses\TwoFactorLoginResponse;
 use Laravel\Fortify\Http\Responses\VerifyEmailResponse;
-use Nkls\FortifyExtension\Listeners\SendTOTPNotification;
+use Laravel\Fortify\Listeners\SendTOTPNotification;
 use PragmaRX\Google2FA\Google2FA;
 
 class FortifyServiceProvider extends ServiceProvider
