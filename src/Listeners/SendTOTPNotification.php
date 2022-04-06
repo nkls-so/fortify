@@ -4,7 +4,7 @@ namespace Laravel\Fortify\Listeners;
 
 use Laravel\Fortify\Events\TwoFactorAuthenticationChallenged;
 use Laravel\Fortify\Events\TwoFactorAuthenticationEnabled;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use Laravel\Fortify\Http\Controllers\TwoFactorAuthenticatedSessionController;
 
 class SendTOTPNotification
 {
@@ -17,6 +17,6 @@ class SendTOTPNotification
      */
     public function handle(TwoFactorAuthenticationEnabled|TwoFactorAuthenticationChallenged $event)
     {
-        app(AuthenticatedSessionController::class)->sendTOTPNotification(null, $event->user);
+        app(TwoFactorAuthenticatedSessionController::class)->sendTOTPNotification(null, $event->user);
     }
 }
