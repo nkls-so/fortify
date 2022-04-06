@@ -15,6 +15,7 @@ use Laravel\Fortify\Enums\TwoFactorChannel;
 use Laravel\Fortify\Events\RecoveryCodeReplaced;
 use Laravel\Fortify\Http\Requests\TwoFactorLoginRequest;
 use Laravel\Fortify\Notifications\TOTPCode;
+use Laravel\Fortify\TwoFactorAuthenticationProvider;
 
 class TwoFactorAuthenticatedSessionController extends Controller
 {
