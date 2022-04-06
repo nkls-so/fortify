@@ -56,15 +56,13 @@ class TwoFactorLoginRequest extends FormRequest
      */
     public function hasValidCode()
     {
-        $user = $this->challengedUser();
-
         $window = null;
-        if (Fortify::useAdditionalTwoFactorChannels() && $user->two_factor_channel != TwoFactorChannel::TOTP_APP) {
+        if (Fortify::useAdditionalTwoFactorChannels() && $this->challengedUser()->two_factor_channel != TwoFactorChannel::TOTP_APP) {
             $window = config('fortify.validation_window');
         }
 
         return $this->code && tap(app(TwoFactorAuthenticationProvider::class)->verify(
-            decrypt($user->two_factor_secret), $this->code, $window
+            decrypt($this->challengedUser()->two_factor_secret), $this->code, $window
         ), function ($result) {
             if ($result) {
                 $this->session()->forget('login.id');
