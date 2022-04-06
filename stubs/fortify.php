@@ -122,6 +122,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Validation Window
+    |--------------------------------------------------------------------------
+    |
+    | You can define a validation window. A new key is generated every 30
+    | seconds, so a window of 4 would include keys from the previous two and
+    | next two minutes.
+    |
+    */
+
+    'validation_window' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | Features
     |--------------------------------------------------------------------------
     |

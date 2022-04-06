@@ -70,4 +70,24 @@ class TwoFactorAuthenticatedSessionController extends Controller
 
         return app(TwoFactorLoginResponse::class);
     }
+
+    /**
+     * Send a new totp notification.
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function sendTOTPNotification(TwoFactorLoginRequest $request = null, User $user = null)
+    {
+        $user = $user ?? $request->challengedUser();
+
+        if (TwoFactorChannel::TOTP_EMAIL === $user->two_factor_channel
+            || TwoFactorChannel::TOTP_SMS === $user->two_factor_channel)
+        {
+            $totp = app(TwoFactorAuthenticationProvider::class)->getCurrentOtp(decrypt($user->two_factor_secret));
+            $user->notify(new TOTPCode($totp));
+        }
+
+        return new JsonResponse('', Response::HTTP_ACCEPTED);
+    }
 }

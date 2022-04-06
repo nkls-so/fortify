@@ -15,7 +15,10 @@ class DisableTwoFactorAuthentication
      */
     public function __invoke($user)
     {
-        $user->forceFill([
+        $user->forceFill((Fortify::useAdditionalTwoFactorChannels() ? [
+            'two_factor_phone' => null,
+            'two_factor_channel' => null,
+        ] : []) + [
             'two_factor_secret' => null,
             'two_factor_recovery_codes' => null,
         ] + (Fortify::confirmsTwoFactorAuthentication() ? [

@@ -135,6 +135,15 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
                 $twoFactorLimiter ? 'throttle:'.$twoFactorLimiter : null,
             ]));
 
+        if (Features::enabled(Features::useAdditionalTwoFactorChannels())) {
+            Route::post('/two-factor-code', [TwoFactorAuthenticatedSessionController::class, 'sendTOTPNotification'])
+                ->middleware(array_filter([
+                    'guest:'.config('fortify.guard'),
+                    $twoFactorLimiter ? 'throttle:'.$twoFactorLimiter : null,
+                ]))
+                ->name('two-factor.send');
+        }
+
         $twoFactorMiddleware = Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')
             ? [config('fortify.auth_middleware', 'auth').':'.config('fortify.guard'), 'password.confirm']
             : [config('fortify.auth_middleware', 'auth').':'.config('fortify.guard')];

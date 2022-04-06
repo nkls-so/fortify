@@ -5,6 +5,7 @@ namespace Laravel\Fortify\Actions;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\TwoFactorAuthenticationProvider;
 use Laravel\Fortify\Events\TwoFactorAuthenticationConfirmed;
+use Laravel\Fortify\Fortify;
 
 class ConfirmTwoFactorAuthentication
 {
@@ -35,9 +36,14 @@ class ConfirmTwoFactorAuthentication
      */
     public function __invoke($user, $code)
     {
+        $window = null;
+        if (Fortify::useAdditionalTwoFactorChannels() && $user->two_factor_channel != TwoFactorChannel::TOTP_APP) {
+            $window = config('fortify-extension.validation_window');
+        }
+
         if (empty($user->two_factor_secret) ||
             empty($code) ||
-            ! $this->provider->verify(decrypt($user->two_factor_secret), $code)) {
+            ! $this->provider->verify(decrypt($user->two_factor_secret), $code, $window)) {
             throw ValidationException::withMessages([
                 'code' => [__('The provided two factor authentication code was invalid.')],
             ])->errorBag('confirmTwoFactorAuthentication');

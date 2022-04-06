@@ -28,6 +28,18 @@ return new class extends Migration
                         ->after('two_factor_recovery_codes')
                         ->nullable();
             }
+
+            if (Fortify::useAdditionalTwoFactorChannels()) {
+                $table->string('two_factor_channel')
+                    ->after('password')
+                    ->nullable()
+                ;
+
+                $table->string('two_factor_phone')
+                    ->after('password')
+                    ->nullable()
+                ;
+            }
         });
     }
 
@@ -44,6 +56,9 @@ return new class extends Migration
                 'two_factor_recovery_codes',
             ], Fortify::confirmsTwoFactorAuthentication() ? [
                 'two_factor_confirmed_at',
+            ] : [], Fortify::useAdditionalTwoFactorChannels() ? [
+                'two_factor_phone',
+                'two_factor_channel',
             ] : []));
         });
     }

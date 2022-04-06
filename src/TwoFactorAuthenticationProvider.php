@@ -59,16 +59,27 @@ class TwoFactorAuthenticationProvider implements TwoFactorAuthenticationProvider
     }
 
     /**
+     * Get the current one time password for a key.
+     *
+     * @param string $secret
+     * @return string
+     */
+    public function getCurrentOtp($secret)
+    {
+        return $this->engine->getCurrentOtp($secret);
+    }
+
+    /**
      * Verify the given code.
      *
      * @param  string  $secret
      * @param  string  $code
      * @return bool
      */
-    public function verify($secret, $code)
+    public function verify($secret, $code, $window = null)
     {
         $timestamp = $this->engine->verifyKeyNewer(
-            $secret, $code, optional($this->cache)->get($key = 'fortify.2fa_codes.'.md5($code))
+            $secret, $code, optional($this->cache)->get($key = 'fortify.2fa_codes.'.md5($code)), $window
         );
 
         if ($timestamp !== false) {

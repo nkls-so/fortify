@@ -32,4 +32,5 @@ return [
         Features::updatePasswords(),
         Features::twoFactorAuthentication(),
     ],
+    'validation_window' => 6,
 ];

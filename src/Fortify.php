@@ -295,6 +295,17 @@ class Fortify
     }
 
     /**
+     * Determine if Fortify is using additional two factor authentication channels.
+     *
+     * @return bool
+     */
+    public static function useAdditionalTwoFactorChannels()
+    {
+        return Features::enabled(Features::twoFactorAuthentication()) &&
+               Features::optionEnabled(Features::twoFactorAuthentication(), 'useAdditionalChannels');
+    }
+
+    /**
      * Configure Fortify to not register its routes.
      *
      * @return static
