@@ -135,7 +135,7 @@ Route::group(['middleware' => config('fortify.middleware', ['web'])], function (
                 $twoFactorLimiter ? 'throttle:'.$twoFactorLimiter : null,
             ]));
 
-        if (Features::enabled(Features::useAdditionalTwoFactorChannels())) {
+        if (Features::optionEnabled(Features::twoFactorAuthentication(), 'useAdditionalChannels')) {
             Route::post('/two-factor-code', [TwoFactorAuthenticatedSessionController::class, 'sendTOTPNotification'])
                 ->middleware(array_filter([
                     'guest:'.config('fortify.guard'),
